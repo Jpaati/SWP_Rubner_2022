@@ -2,11 +2,15 @@ from random import randint
 
 def get_random_six():
     list_return = []
-    for i in range(0, 6):
+    counter = 0
+    while counter < 6:
         ran = randint(0,45)
         if(not ran in list_return):
             list_return.append(ran)
+            counter = counter +1
+    print(list_return)
     return list_return
+    
 
 list_stat = [0] * 46
 
