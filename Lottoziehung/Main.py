@@ -8,7 +8,6 @@ def get_random_six():
             list_return.append(ran)
     return list_return
 
-
 list_stat = [0] * 46
 
 def get_statistic(list):
