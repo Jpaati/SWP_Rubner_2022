@@ -3,7 +3,6 @@ from random import randint
 list_return = []
 
 def get_random_six(startValue, endValue, rangeD):
-
     for x in range(rangeD):
         lastPos = len(list_return)-1-x
         ran = randint(startValue-1, lastPos)
