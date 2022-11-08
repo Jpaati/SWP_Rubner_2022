@@ -1,4 +1,3 @@
-from logging import Filter
 import random
 from random import randint
 from xml.dom.minidom import Element
@@ -15,6 +14,14 @@ def define_dict():
     for item in list_possible_outcomes:
         dict_stat[item] = 0
 
+def filter_methode(random_Five):
+    for number in list_number:
+        ele = len(list(filter(lambda pCard : pCard['number'] == number, random_Five))) # get len of number, if double is there
+        if(ele == 4):
+           return 4
+        if(ele == 3):
+            return 3
+    return 0
 
 def get_Stat(list_Cards):
     if(check_Royal_Street_Flush(list_Cards)):
@@ -54,17 +61,16 @@ def get_random_5(poker_Cards):
 def check_Poker_Pair(random_Five):
     pair_Counter = 0
     for number in list_number:
-        ele = len(list(filter(lambda pCard : pCard['number'] == number, random_Five))) # get len of number, if double is there
+        ele = len(list(filter(lambda pCard : pCard['number'] == number, random_Five))) # if filter-argument = true / add number to list / if list == 2, there are two of the same numbers in there
         if(ele == 2):
             pair_Counter +=1
     return pair_Counter
 
 def check_Poker_Three(random_Five):
-    for number in list_number:
-        ele = len(list(filter(lambda pCard : pCard['number'] == number, random_Five))) # get len of number, if double is there
-        if(ele == 3):
-           return True
-    return False
+    if(filter_methode(random_Five) == 3):
+        return True
+    else:
+        return False
 
 def check_Flush(random_Five):
     for type in list_Type:
@@ -93,11 +99,10 @@ def check_Street(random_Five):
         return False
 
 def check_Four(random_Five):
-    for number in list_number:
-        ele = len(list(filter(lambda pCard : pCard['number'] == number, random_Five))) # get len of number, if double is there
-        if(ele == 4):
-           return True
-    return False
+    if(filter_methode(random_Five) == 4):
+        return True
+    else:
+        return False
 
 def check_Straight_Flush(random_Five):
     list_index = []
@@ -123,13 +128,13 @@ def check_Royal_Street_Flush(random_Five):
     else:
         return False
 
-#TODO: Auswertung erstellen
 
 define_Cards()
 define_dict()
 
+sized = 100000
 
-for i in range(0, 100000):
+for i in range(0, sized):
     list_random_Five = get_random_5(list_PokerCards)
     get_Stat(list_random_Five)
     print(i)
