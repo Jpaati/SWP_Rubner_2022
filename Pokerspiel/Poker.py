@@ -15,13 +15,16 @@ def define_dict():
         dict_stat[item] = 0
 
 def filter_methode(random_Five):
+    pairCounter = 0
     for number in list_number:
         ele = len(list(filter(lambda pCard : pCard['number'] == number, random_Five))) # get len of number, if double is there
         if(ele == 4):
            return 4
-        if(ele == 3):
+        elif(ele == 3):
             return 3
-    return 0
+        elif(ele == 2):
+            pairCounter = pairCounter +1
+    return pairCounter
 
 def get_Stat(list_Cards):
     if(check_Royal_Street_Flush(list_Cards)):
@@ -59,12 +62,8 @@ def get_random_5(poker_Cards):
     return poker_Cards[-5:]
 
 def check_Poker_Pair(random_Five):
-    pair_Counter = 0
-    for number in list_number:
-        ele = len(list(filter(lambda pCard : pCard['number'] == number, random_Five))) # if filter-argument = true / add number to list / if list == 2, there are two of the same numbers in there
-        if(ele == 2):
-            pair_Counter +=1
-    return pair_Counter
+    if(filter_methode(random_Five) == 1 or filter_methode(random_Five) == 2):
+        return filter_methode(random_Five)
 
 def check_Poker_Three(random_Five):
     if(filter_methode(random_Five) == 3):
