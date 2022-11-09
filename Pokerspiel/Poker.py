@@ -133,8 +133,7 @@ def dict_to_decimal():
     for item in dict_stat:
         dict_stat[item] = round(dict_stat[item]/sized, 2)
 
-
-if __name__ == "__main__":
+def main():
     define_Cards()
     define_dict()
     for i in range(0, sized):
@@ -143,3 +142,6 @@ if __name__ == "__main__":
         print(i)
     dict_to_decimal()
     print(dict_stat)
+
+if __name__ == "__main__":
+    main()

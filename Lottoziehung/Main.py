@@ -23,16 +23,18 @@ startValueZ = 1
 rangeZ = 6
 
 list_stat = {}
-# ist ein Schlüsselwertepaar
 for item in range(startValueZ, endValueZ+1):
         list_return.append(item)
         list_stat[item] = 0
 
-for index in range(0, 1001):
-    rand = get_random_six(startValueZ, endValueZ, rangeZ)
-    get_statistic(rand)
-    #Statistik not right
-print(list_stat)
+def main():
+    for index in range(0, 1001):
+        rand = get_random_six(startValueZ, endValueZ, rangeZ)
+        get_statistic(rand)
+    print(list_stat)
+
+if __name__ == "__main__":
+    main()
 
 
 
