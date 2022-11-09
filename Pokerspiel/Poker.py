@@ -127,15 +127,19 @@ def check_Royal_Street_Flush(random_Five):
     else:
         return False
 
+sized = 10000
 
-define_Cards()
-define_dict()
+def dict_to_decimal():
+    for item in dict_stat:
+        dict_stat[item] = round(dict_stat[item]/sized, 2)
 
-sized = 100000
 
-for i in range(0, sized):
-    list_random_Five = get_random_5(list_PokerCards)
-    get_Stat(list_random_Five)
-    print(i)
-
-print(dict_stat)
+if __name__ == "__main__":
+    define_Cards()
+    define_dict()
+    for i in range(0, sized):
+        list_random_Five = get_random_5(list_PokerCards)
+        get_Stat(list_random_Five)
+        print(i)
+    dict_to_decimal()
+    print(dict_stat)
