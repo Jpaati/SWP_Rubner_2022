@@ -19,10 +19,10 @@ def filter_methode(random_Five):
     for number in list_number:
         ele = len(list(filter(lambda pCard : pCard['number'] == number, random_Five))) # get len of number, if double is there
         if(ele == 4):
-           return 4
-        elif(ele == 3):
+           return 4 # brauche keine ifelse, da ich sofort rausgehe
+        if(ele == 3):
             return 3
-        elif(ele == 2):
+        if(ele == 2):
             pairCounter = pairCounter +1
     return pairCounter
 
@@ -135,11 +135,11 @@ def dict_to_decimal():
 
 def main():
     define_Cards()
+    breakpoint()
     define_dict()
     for i in range(0, sized):
         list_random_Five = get_random_5(list_PokerCards)
         get_Stat(list_random_Five)
-        print(i)
     dict_to_decimal()
     print(dict_stat)
 
