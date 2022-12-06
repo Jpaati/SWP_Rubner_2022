@@ -8,7 +8,6 @@ def get_random_six(startValue, endValue, rangeD):
         ran = randint(startValue-1, lastPos)
         list_return[ran], list_return[lastPos] = list_return[lastPos], list_return[ran] 
     print("Ziehung", list_return[-rangeD:])
-    #TODO: correct ERROR
     return list_return[-rangeD:]
 
 def get_statistic(list):
