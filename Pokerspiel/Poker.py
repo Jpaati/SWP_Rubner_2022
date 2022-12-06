@@ -1,6 +1,5 @@
 import random
 from random import randint
-from xml.dom.minidom import Element
 
 list_PokerCards = []
 
