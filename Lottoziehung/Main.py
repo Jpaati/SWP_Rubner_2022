@@ -1,5 +1,6 @@
 from random import randint
 
+
 list_return = []
 
 def get_random_six(startValue, endValue, rangeD):

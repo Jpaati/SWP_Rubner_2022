@@ -1,4 +1,5 @@
 import random
+import requests
 
 class Hand:
     def __init__(self, figure, is_beaten_by):
@@ -15,6 +16,7 @@ class Game:
         self.score_Player2 = 0
         self.round_counter = 0
         self.chosen_symbols = {}
+        self.player_won = False
         for item in hand:
             self.chosen_symbols[item.figure] = 0
 
@@ -35,6 +37,8 @@ class Game:
         self.chosen_symbols[player2.figure] +=1
 
     def print_score(self):
+        if(self.score_Player1 < self.score_Player2):
+            self.player_won = True
         print("Player1:", self.score_Player1, "Player2:" , self.score_Player2)
         print("Chosen Symbols:" , self.chosen_symbols)
     
@@ -51,8 +55,15 @@ def generate_Player_Hand(figureStr):
         return Hand('Spock', ['Lizard', 'Paper'])
     return "Wrong Input"
 
+def data_to_Server(chosen_symbols, player_Name, player_won):
+    j = {'player_name': player_Name, 'chosen_symbols': chosen_symbols, 'player_won': player_won}
+    response = requests.put('http://localhost:5000/data/0' , json=j)
+    print(response)
         
 if __name__ == "__main__":
+    print("INSERT your name:")
+    player_name = input()
+
     hand_list = [Hand("Rock", ['Spock', 'Paper']), Hand('Paper', ['Scissor', 'Lizard']), Hand('Scissor', ['Rock', 'Spock']), Hand('Lizard', ['Rock', 'Scissor']), Hand('Spock', ['Lizard', 'Paper'])]
     game1 = Game(hand_list)
 
@@ -65,3 +76,4 @@ if __name__ == "__main__":
         game1.play_a_round(playerHand, comp)
         print("opponent:", comp.figure)
     game1.print_score()
+    data_to_Server(str(game1.chosen_symbols), player_name, game1.player_won)

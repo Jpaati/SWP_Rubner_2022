@@ -15,7 +15,7 @@ api = Api(app) #Die Flask API
 Base = declarative_base()  # Basisklasse aller in SQLAlchemy verwendeten Klassen
 metadata = Base.metadata
 
-engine = create_engine(r'sqlite:///C:\Users\pjene\Desktop\Schule\Anichstraße-HTL\5.AHWII\SWP\RockPaperScissor\server.sqlite3') #Welche Datenbank wird verwendet
+engine = create_engine(r'sqlite:///C:\Users\pjene\Desktop\Schule\Anichstraße-HTL\5AHWII\SWP\RockPaperScissor\server.sqlite3') #Welche Datenbank wird verwendet
 db_session = scoped_session(sessionmaker(autocommit=True, autoflush=True, bind=engine))
 Base.query = db_session.query_property() #Dadurch hat jedes Base - Objekt (also auch ein GeoInfo) ein Attribut query für Abfragen
 app = Flask(__name__) #Die Flask-Anwendung
@@ -26,13 +26,13 @@ class BinaryWithMetadata(Base):
     __tablename__ = 'data'  # Abbildung auf diese Tabelle
     id: int
     player_name: str
-    symbol: str
-    symbol_num: str
+    chosen_symbols: str
+    player_won: int
 
     id = Column(Integer, primary_key=True)
     player_name = Column(Text)
-    symbol = Column(Text)
-    symbol_num = Column(Text)
+    chosen_symbols = Column(Text)
+    player_won = Column(Integer)
 
 
 class BinaryWithMetadataREST(Resource):
@@ -43,7 +43,7 @@ class BinaryWithMetadataREST(Resource):
     def put(self,id):
         d = request.get_json(force=True)
         print(d)
-        info = BinaryWithMetadata(player_name = d['player_name'], symbol = d['symbol'], symbol_num = d['symbol_num'])
+        info = BinaryWithMetadata(player_name = d['player_name'], chosen_symbols = d['chosen_symbols'], player_won = d['player_won'])
         db_session.add(info)
         db_session.flush()
         print('Addes Session')
