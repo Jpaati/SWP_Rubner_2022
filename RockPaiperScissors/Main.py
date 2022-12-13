@@ -45,15 +45,15 @@ class Game:
     
 def generate_Player_Hand(figureStr):
     if(figureStr == 'Rock'):
-        return Hand('Rock', ['Spock', 'Paper'])
+        return Hand("Rock", ['Spock', 'Paper'])
     elif(figureStr == 'Paper'):
-        return Hand('Paper', ['Scissor', 'Lizard'])
+        return Hand("Paper", ['Scissor', 'Lizard'])
     elif(figureStr == 'Scissor'):
-        return Hand('Scissor', ['Rock', 'Spock'])
+        return Hand("Scissor", ['Rock', 'Spock'])
     elif(figureStr == 'Lizard'):
-        return Hand('Lizard', ['Rock', 'Scissor'])
+        return Hand("Lizard", ['Rock', 'Scissor'])
     elif(figureStr == 'Spock'):
-        return Hand('Spock', ['Lizard', 'Paper'])
+        return Hand("Spock", ['Lizard', 'Paper'])
     return "Wrong Input"
 
 def data_to_Server(chosen_symbols, player_Name, player_won):
@@ -62,15 +62,26 @@ def data_to_Server(chosen_symbols, player_Name, player_won):
     print(response)
 
 def get_Data_from_Server(player_Name):
-    response = requests.get('http://localhost:5000/search/'+ player_name)
+    response = requests.get('http://localhost:5000/search/'+ player_Name)
     get_Data_For_Algorithm(response.json())
     return response
 
 
 def get_Data_For_Algorithm(data):
-    dic = {'Rock': 0, 'Paper' : 0, 'Scissor': 0, 'Lizard': 0, 'Spock': 0}
-    #TODO: Program algorithm
-        
+    dic_stats = {"Rock": 0, "Paper" : 0, "Scissor": 0, "Lizard": 0, "Spock": 0}
+    for item in data:
+        string = str(item['chosen_symbols'])
+        string = string[1:-1]
+        js_ar = string.split(",")
+        for ele in js_ar:
+            arr = ele.split(":")
+            arr[0] = arr[0].replace(" ", "")
+            arr[0] = arr[0][1:-1]
+            dic_stats[arr[0]] += int(arr[1])
+    return dic_stats
+
+def get_computer_hand(list):
+    pass
 
         
 if __name__ == "__main__":
@@ -90,11 +101,11 @@ if __name__ == "__main__":
 
         elif(int(choice) == 1):
             print("Hallo")
-            hand_list = [Hand("Rock", ['Spock', 'Paper']), Hand('Paper', ['Scissor', 'Lizard']), Hand('Scissor', ['Rock', 'Spock']), Hand('Lizard', ['Rock', 'Scissor']), Hand('Spock', ['Lizard', 'Paper'])]
+            hand_list = [Hand("Rock", ["Spock", "Paper"]), Hand("Paper", ["Scissor", "Lizard"]), Hand("Scissor", ["Rock", "Spock"]), Hand("Lizard", ["Rock", "Scissor"]), Hand("Spock", ["Lizard", "Paper"])]
             game1 = Game(hand_list)
 
             while game1.round_counter < 3:
-                comp = random.choice(hand_list)
+                comp = get_computer_hand(hand_list)
                 print()
                 print("Insert your Hand: [Rock, Paper, Scissor, Lizard, Spock]")
                 playerHand = generate_Player_Hand(input())
