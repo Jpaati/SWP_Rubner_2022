@@ -7,6 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql.expression import func
 from flask_restful import Resource, Api
 from dataclasses import dataclass
+from sqlalchemy import create_engine,  or_
 import json
 
 app = Flask(__name__) #Die Flask-Anwendung
@@ -34,6 +35,12 @@ class BinaryWithMetadata(Base):
     chosen_symbols = Column(Text)
     player_won = Column(Integer)
 
+    def serialize(self):
+        return {'id' : self.id,
+                'player_name':  self.player_name,
+                'chosen_symbols' : self.chosen_symbols,
+                'player_won': self.player_name}
+
 
 class BinaryWithMetadataREST(Resource):
     def get(self, id):
@@ -57,7 +64,18 @@ class BinaryWithMetadataREST(Resource):
         db_session.flush()
         return jsonify({'message': '%d deleted' % id})
 api.add_resource(BinaryWithMetadataREST, '/data/<int:id>')
- 
+
+
+@app.route('/search/<string:needle>')
+def search_player(needle):
+    res = BinaryWithMetadata.query.filter(or_(BinaryWithMetadata.player_name.contains(needle))) #kommt in einem der beiden Spalten ein bestimmter String vor
+    resA = []
+    for m in res:
+        print (type(m), m.serialize())
+        resA.append(m.serialize())
+    return jsonify(resA) 
+
+
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     print("Shutdown Session")

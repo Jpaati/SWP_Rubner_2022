@@ -1,5 +1,6 @@
 import random
 import requests
+import json
 
 class Hand:
     def __init__(self, figure, is_beaten_by):
@@ -59,21 +60,50 @@ def data_to_Server(chosen_symbols, player_Name, player_won):
     j = {'player_name': player_Name, 'chosen_symbols': chosen_symbols, 'player_won': player_won}
     response = requests.put('http://localhost:5000/data/0' , json=j)
     print(response)
+
+def get_Data_from_Server(player_Name):
+    response = requests.get('http://localhost:5000/search/'+ player_name)
+    get_Data_For_Algorithm(response.json())
+    return response
+
+
+def get_Data_For_Algorithm(data):
+    dic = {'Rock': 0, 'Paper' : 0, 'Scissor': 0, 'Lizard': 0, 'Spock': 0}
+    #TODO: Program algorithm
+        
+
         
 if __name__ == "__main__":
+    ongoing = True
     print("INSERT your name:")
     player_name = input()
 
-    hand_list = [Hand("Rock", ['Spock', 'Paper']), Hand('Paper', ['Scissor', 'Lizard']), Hand('Scissor', ['Rock', 'Spock']), Hand('Lizard', ['Rock', 'Scissor']), Hand('Spock', ['Lizard', 'Paper'])]
-    game1 = Game(hand_list)
+    while(ongoing):
+        print("Your options", player_name, ": Stats[0], Play[1]")
+        choice = input()
+        print(choice)
 
-    while game1.round_counter < 3:
-        comp = random.choice(hand_list)
-        print()
-        print("Insert your Hand: [Rock, Paper, Scissor, Lizard, Spock]")
-        playerHand = generate_Player_Hand(input())
+        if(int(choice) == 0):
+            data = get_Data_from_Server(player_name)
+            #not response but data
+            print(data.json())
+
+        elif(int(choice) == 1):
+            print("Hallo")
+            hand_list = [Hand("Rock", ['Spock', 'Paper']), Hand('Paper', ['Scissor', 'Lizard']), Hand('Scissor', ['Rock', 'Spock']), Hand('Lizard', ['Rock', 'Scissor']), Hand('Spock', ['Lizard', 'Paper'])]
+            game1 = Game(hand_list)
+
+            while game1.round_counter < 3:
+                comp = random.choice(hand_list)
+                print()
+                print("Insert your Hand: [Rock, Paper, Scissor, Lizard, Spock]")
+                playerHand = generate_Player_Hand(input())
         
-        game1.play_a_round(playerHand, comp)
-        print("opponent:", comp.figure)
-    game1.print_score()
-    data_to_Server(str(game1.chosen_symbols), player_name, game1.player_won)
+                game1.play_a_round(playerHand, comp)
+                print("opponent:", comp.figure)
+            game1.print_score()
+
+            print("Want to continue?")
+            ongoing = input()
+        
+            data_to_Server(str(game1.chosen_symbols), player_name, game1.player_won)
