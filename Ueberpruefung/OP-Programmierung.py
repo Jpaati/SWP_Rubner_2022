@@ -8,7 +8,7 @@ class Gender(Enum):
 
 
 class Firma:
-    def __init__(self, name, ustd_number, abteilungen):   #true für male und false für female
+    def __init__(self, name, ustd_number, abteilungen):
         self.name = name
         self.ustd_number = ustd_number
         self.abteilungen = abteilungen
@@ -32,6 +32,7 @@ class Firma:
             all_mit = all_mit + ele.mitarbeiter
             all_mit.append(ele.abteilungsleiter)
         for i in all_mit:
+            print(i.geschlecht)
             if(i.geschlecht == Gender.Female):
                 dict_quote["Female"] +=1
             else:
@@ -75,7 +76,7 @@ class Person:
     
 
 class Mitarbeiter (Person):
-    def __init__(self, name, alter, geschlecht, gehalt):
+    def __init__(self, name, alter, gehalt, geschlecht):
         super().__init__(name, alter, geschlecht)
         self.gehalt = gehalt
     
@@ -84,7 +85,7 @@ class Mitarbeiter (Person):
     
 
 class Abteilungsleiter (Mitarbeiter):
-    def __init__(self, name, alter, geschlecht, gehalt, parkplatz_number):
+    def __init__(self, name, alter, gehalt, geschlecht, parkplatz_number):
         super().__init__(name, alter, geschlecht, gehalt)
         self.parkplatz_number = parkplatz_number
     
@@ -95,12 +96,12 @@ class Abteilungsleiter (Mitarbeiter):
 
 if __name__ == "__main__":
     mitarbeiter_a = [
-        Mitarbeiter("Patrick", 18, 2005, Gender.Male),
+        Mitarbeiter("Patrick", 18, 2005, Gender.Female),
         Mitarbeiter("Marcel", 18, 2005, Gender.Male),
         
     ]
     mitarbeiter_b = [
-        Mitarbeiter("Paula", 18, 2005, Gender.Male),
+        Mitarbeiter("Paula", 18, 2005, Gender.Female),
         Mitarbeiter("Timo", 18, 2005, Gender.Male),
         Mitarbeiter("Noah", 18, 2005, Gender.Male)
     ]
