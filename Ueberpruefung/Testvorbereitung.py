@@ -30,6 +30,10 @@ print(id(zahl1) == id(zahl))
 arr2 = map(lambda x: x+1, arr)
 print(list(arr2))
 
+dic = {"Hallo": 1, "Stop": 1}
+
+
+
 arr.sort()
 
 class Person():

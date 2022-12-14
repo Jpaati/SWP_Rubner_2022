@@ -1,6 +1,7 @@
 import random
 import requests
-import json
+
+gotDataFromServer = False
 
 class Hand:
     def __init__(self, figure, is_beaten_by):
@@ -64,11 +65,13 @@ def data_to_Server(chosen_symbols, player_Name, player_won):
 def get_Data_from_Server(player_Name):
     response = requests.get('http://localhost:5000/search/'+ player_Name)
     get_Data_For_Algorithm(response.json())
+    global gotDataFromServer
+    gotDataFromServer = True
     return response
 
+dic_stats = {"Rock": 0, "Paper" : 0, "Scissor": 0, "Lizard": 0, "Spock": 0}
 
 def get_Data_For_Algorithm(data):
-    dic_stats = {"Rock": 0, "Paper" : 0, "Scissor": 0, "Lizard": 0, "Spock": 0}
     for item in data:
         string = str(item['chosen_symbols'])
         string = string[1:-1]
@@ -78,12 +81,23 @@ def get_Data_For_Algorithm(data):
             arr[0] = arr[0].replace(" ", "")
             arr[0] = arr[0][1:-1]
             dic_stats[arr[0]] += int(arr[1])
+    print(dic_stats)
     return dic_stats
 
-def get_computer_hand(list):
-    pass
+def get_computer_hand(listd):
+    if(gotDataFromServer):
+        sumd = sum(dic_stats.values())
+        print(dic_stats.values())
+        for ele in dic_stats:
+            dic_stats[ele] = dic_stats[ele] / sumd
+        print(dic_stats)
+        symbol_max = max(dic_stats, key=dic_stats.get)
+        dic_stats.pop(symbol_max)
+        return generate_Player_Hand(symbol_max)
+    else:
+        return random.choice(listd)
 
-        
+
 if __name__ == "__main__":
     ongoing = True
     print("INSERT your name:")
@@ -92,11 +106,9 @@ if __name__ == "__main__":
     while(ongoing):
         print("Your options", player_name, ": Stats[0], Play[1]")
         choice = input()
-        print(choice)
 
         if(int(choice) == 0):
             data = get_Data_from_Server(player_name)
-            #not response but data
             print(data.json())
 
         elif(int(choice) == 1):
@@ -114,7 +126,11 @@ if __name__ == "__main__":
                 print("opponent:", comp.figure)
             game1.print_score()
 
-            print("Want to continue?")
-            ongoing = input()
-        
+            print("Want to continue?: Yes[0] No[1]")
+            ongoingD = input()
+            if(ongoingD == 0):
+                ongoing = True
+            if(ongoingD == 1):
+                ongoing = False
+            
             data_to_Server(str(game1.chosen_symbols), player_name, game1.player_won)
