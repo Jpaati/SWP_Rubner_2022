@@ -32,7 +32,6 @@ class Firma:
             all_mit = all_mit + ele.mitarbeiter
             all_mit.append(ele.abteilungsleiter)
         for i in all_mit:
-            print(i.geschlecht)
             if(i.geschlecht == Gender.Female):
                 dict_quote["Female"] +=1
             else:
@@ -80,6 +79,10 @@ class Mitarbeiter (Person):
         super().__init__(name, alter, geschlecht)
         self.gehalt = gehalt
     
+    def __repr__(self) -> str:
+        return self.__str__()
+    #Wenn ein Mitarbeiter aufgerufen wird aus einer List
+
     def print(self):
         return super().print() + " Gehalt: " + str(self.gehalt)
     
