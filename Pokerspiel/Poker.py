@@ -1,5 +1,6 @@
 import random
 from random import randint
+import matplotlib.pyplot as plt
 
 list_PokerCards = []
 
@@ -126,21 +127,30 @@ def check_Royal_Street_Flush(random_Five):
     else:
         return False
 
-sized = 10000
+sized = 1000
 
 def dict_to_decimal():
     for item in dict_stat:
         dict_stat[item] = round(dict_stat[item]/sized, 2)
 
+def dic_stats_to_Plot(dic_data):
+    keys = dic_data.keys()
+    values = dic_data.values()
+    fig1, ax1 = plt.subplots()
+    ax1.pie(values, labels=keys, autopct='%1.1f%%', shadow=True, startangle=90)
+    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    plt.show()
+
+
 def main():
     define_Cards()
-    breakpoint()
     define_dict()
     for i in range(0, sized):
         list_random_Five = get_random_5(list_PokerCards)
         get_Stat(list_random_Five)
     dict_to_decimal()
     print(dict_stat)
+    dic_stats_to_Plot(dict_stat)
 
 if __name__ == "__main__":
     main()
