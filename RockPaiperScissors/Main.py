@@ -1,5 +1,6 @@
 import random
 import requests
+import matplotlib.pyplot as plt
 
 gotDataFromServer = False
 
@@ -64,14 +65,12 @@ def data_to_Server(chosen_symbols, player_Name, player_won):
 
 def get_Data_from_Server(player_Name):
     response = requests.get('http://localhost:5000/search/'+ player_Name)
-    get_Data_For_Algorithm(response.json())
     global gotDataFromServer
     gotDataFromServer = True
     return response
 
-dic_stats = {"Rock": 0, "Paper" : 0, "Scissor": 0, "Lizard": 0, "Spock": 0}
-
 def get_Data_For_Algorithm(data):
+    dic_stats = {"Rock": 0, "Paper" : 0, "Scissor": 0, "Lizard": 0, "Spock": 0}
     for item in data:
         string = str(item['chosen_symbols'])
         string = string[1:-1]
@@ -81,21 +80,28 @@ def get_Data_For_Algorithm(data):
             arr[0] = arr[0].replace(" ", "")
             arr[0] = arr[0][1:-1]
             dic_stats[arr[0]] += int(arr[1])
-    print(dic_stats)
     return dic_stats
 
-def get_computer_hand(listd):
+def get_computer_hand(listd, dic_stats):
     if(gotDataFromServer):
         sumd = sum(dic_stats.values())
-        print(dic_stats.values())
         for ele in dic_stats:
             dic_stats[ele] = dic_stats[ele] / sumd
-        print(dic_stats)
+        print("Computer", dic_stats)
         symbol_max = max(dic_stats, key=dic_stats.get)
         dic_stats.pop(symbol_max)
         return generate_Player_Hand(symbol_max)
     else:
         return random.choice(listd)
+
+
+def get_Stats_to_plot(dic_data):
+    keys = dic_data.keys()
+    values = dic_data.values()
+    fig1, ax1 = plt.subplots()
+    ax1.pie(values, labels=keys, autopct='%1.1f%%', shadow=True, startangle=90)
+    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    plt.show()
 
 
 if __name__ == "__main__":
@@ -110,14 +116,19 @@ if __name__ == "__main__":
 
         if(int(choice) == 0):
             data = get_Data_from_Server(player_name)
-            print(data.json())
+            dict_stats = get_Data_For_Algorithm(data.json())
+            print("VALUE", dict_stats)
+            print("Want to plot the Data? Yes [0], NO [1]")
+            choice = input()
+            if(int(choice) == 0):
+                get_Stats_to_plot(dict_stats)
 
         elif(int(choice) == 1):
             print("Hallo")
             game1 = Game(hand_list)
 
             while game1.round_counter < 3:
-                comp = get_computer_hand(hand_list)
+                comp = get_computer_hand(hand_list, dict_stats)
                 print()
                 print("Insert your Hand: [Rock, Paper, Scissor, Lizard, Spock]")
                 playerHand = generate_Player_Hand(input())
@@ -155,4 +166,6 @@ if __name__ == "__main__":
                 print("opponent:", comp.figure)
             print("YOUR STATS")
             game2.print_score()
+        else:
+            print("Wrong Input. Try again!")
 
