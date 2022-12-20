@@ -1,6 +1,6 @@
 
 from enum import Enum
-# Firma hat einen Namen, anzahl Mitarbeiter, anzahl Gruppenleiter, 
+import matplotlib.pyplot as plt
 
 class Gender(Enum):
     Male = 0
@@ -96,6 +96,14 @@ class Abteilungsleiter (Mitarbeiter):
         return super().print() + " Parkplatz-Number: " + str(self.parkplatz_number)
 
 
+def get_Stats_to_plot(dic_data):
+    dic_data.pop("Quote_Woman")
+    keys = dic_data.keys()
+    values = dic_data.values()
+    fig1, ax1 = plt.subplots()
+    ax1.pie(values, labels=keys, autopct='%1.1f%%', shadow=True, startangle=90)
+    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    plt.show()
 
 if __name__ == "__main__":
     mitarbeiter_a = [
@@ -134,5 +142,6 @@ if __name__ == "__main__":
     #Quote Frauen, Männer
     dict_quote = firma.quote_Female_Male()
     print(dict_quote)
+    get_Stats_to_plot(dict_quote)
 
 
