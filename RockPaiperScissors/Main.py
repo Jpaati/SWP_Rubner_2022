@@ -99,12 +99,13 @@ def get_computer_hand(listd):
 
 
 if __name__ == "__main__":
+    hand_list = [Hand("Rock", ["Spock", "Paper"]), Hand("Paper", ["Scissor", "Lizard"]), Hand("Scissor", ["Rock", "Spock"]), Hand("Lizard", ["Rock", "Scissor"]), Hand("Spock", ["Lizard", "Paper"])]
     ongoing = True
     print("INSERT your name:")
     player_name = input()
 
     while(ongoing):
-        print("Your options", player_name, ": Stats[0], Play[1]")
+        print("Your options", player_name, ": Stats[0], Play[1], CompVSComp[2]")
         choice = input()
 
         if(int(choice) == 0):
@@ -113,7 +114,6 @@ if __name__ == "__main__":
 
         elif(int(choice) == 1):
             print("Hallo")
-            hand_list = [Hand("Rock", ["Spock", "Paper"]), Hand("Paper", ["Scissor", "Lizard"]), Hand("Scissor", ["Rock", "Spock"]), Hand("Lizard", ["Rock", "Scissor"]), Hand("Spock", ["Lizard", "Paper"])]
             game1 = Game(hand_list)
 
             while game1.round_counter < 3:
@@ -127,6 +127,7 @@ if __name__ == "__main__":
             game1.print_score()
 
             print("Want to continue?: Yes[0] No[1]")
+            game1.round_counter = 0
             ongoingD = input()
             if(ongoingD == 0):
                 ongoing = True
@@ -134,3 +135,24 @@ if __name__ == "__main__":
                 ongoing = False
             
             data_to_Server(str(game1.chosen_symbols), player_name, game1.player_won)
+        
+        elif int(choice) == 2:
+            print("GameMode: Computer (Data) vs. Computer (Random)")
+            print("Insert Name for Data:")
+            player_1 = input()
+            
+            response1 = get_Data_from_Server(player_1)
+            print("Player1", response1.json())
+            hand_player1 = get_computer_hand(hand_list)
+            print("Hand_Player1", hand_player1)
+
+            game2 = Game(hand_list)
+            while game2.round_counter < 3:
+                comp = get_computer_hand(hand_list)
+                playerHand = random.choice(hand_list)
+        
+                game2.play_a_round(playerHand, comp)
+                print("opponent:", comp.figure)
+            print("YOUR STATS")
+            game2.print_score()
+
