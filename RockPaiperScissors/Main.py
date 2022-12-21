@@ -154,18 +154,20 @@ if __name__ == "__main__":
             
             response1 = get_Data_from_Server(player_1)
             print("Player1", response1.json())
-            hand_player1 = get_computer_hand(hand_list)
+            dict_stats = get_Data_For_Algorithm(response1.json())
+
+            hand_player1 = get_computer_hand(hand_list, dict_stats)
             print("Hand_Player1", hand_player1)
 
             game2 = Game(hand_list)
             while game2.round_counter < 3:
-                comp = get_computer_hand(hand_list)
+                comp = get_computer_hand(hand_list, dict_stats)
                 playerHand = random.choice(hand_list)
         
                 game2.play_a_round(playerHand, comp)
                 print("opponent:", comp.figure)
+            print("")
             print("YOUR STATS")
             game2.print_score()
         else:
             print("Wrong Input. Try again!")
-
