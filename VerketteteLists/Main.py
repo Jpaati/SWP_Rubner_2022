@@ -1,3 +1,4 @@
+import copy
 
 class ListElement():
     def __init__(self, *args):
@@ -66,9 +67,22 @@ class List():
             iterator = iterator.next
         out += "]"
         return out
+
+    def getLastElement(self):
+        iterator = self.first
+        while(iterator.next != None):
+            iterator = iterator.next
+        return iterator
     
     def reverseList(self):
-        pass
+        list1 = copy.deepcopy(self)
+        list2 = List()
+        while(list1.getLength() > 1):
+            lastE = list1.getLastElement()
+            list2.addElement(lastE)
+            list1.pop()
+        list2.addElement(list1.first)
+        return list2
 
     def index(self, element):
         iterator = self.first
@@ -87,15 +101,22 @@ def main():
     ele1 = ListElement("E1")
     ele2 = ListElement("E2")
     ele3 = ListElement("E3")
+    ele4 = ListElement("E4")
     list.addElement(ele2)
     list.addElement(ele1)
+    list.addElement(ele4)
     list.addElement(ele3)
+
     print("Ausgabe:", list.printList())
     print("Counter", list.getLength())
     print("Pop", list.pop())
     print("Ausgabe:", list.printList())
     print("FindObj:", list.findObj(ele3))
     print("Index", list.index(ele1))
+    print("LastElement:", list.getLastElement())
+    list2 = list.reverseList()
+    print("Ausgabe:", list2.printList())
+    print("Ausgabe:", list.printList())
 
 
 
