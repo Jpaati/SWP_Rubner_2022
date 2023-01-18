@@ -41,14 +41,12 @@ class List():
         return True
         
 
-    def deleteElement(self, element):
-        #does not work up to now
+    def deleteElementByIndex(self, index):
+        ele_Delete = self.getElementFromIndex(index)
         iterator = self.first
-        while(iterator.next != None):
-            if(iterator.next == element):
-                iterator.next == element.next
+        while(iterator.next != ele_Delete):
             iterator = iterator.next
-        return True
+        #TODO: weitermachen
 
     def findObj(self, element):
         iterator = self.first
@@ -84,7 +82,7 @@ class List():
         list2.addElement(list1.first)
         return list2
 
-    def index(self, element):
+    def getIndexFromElement(self, element):
         iterator = self.first
         counter = 0
         while(iterator != element):
@@ -94,6 +92,16 @@ class List():
             else:
                 return None
         return counter
+    
+    def getElementFromIndex(self, index):
+        iterator = self.first
+        if(index > self.getLength()):
+            raise IndexError("Index out of Bounce")
+        counter = 0
+        while(counter < index):
+            iterator = iterator.next
+            counter += 1
+        return iterator
 
 
 def main():
@@ -109,16 +117,15 @@ def main():
 
     print("Ausgabe:", list.printList())
     print("Counter", list.getLength())
-    print("Pop", list.pop())
+    #print("Pop", list.pop())
     print("Ausgabe:", list.printList())
     print("FindObj:", list.findObj(ele3))
-    print("Index", list.index(ele1))
+    print("IndexFromElement", list.getIndexFromElement(ele1))
     print("LastElement:", list.getLastElement())
     list2 = list.reverseList()
     print("Ausgabe:", list2.printList())
     print("Ausgabe:", list.printList())
-
-
+    print("ElementFromIndex:", list.getElementFromIndex(2))
 
 if __name__ == "__main__":
     main()
