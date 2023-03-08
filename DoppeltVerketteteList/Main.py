@@ -1,25 +1,29 @@
-import copy
 
 class ListElement():
     def __init__(self, *args):
        self.object = args[0]
        self.next = None
+       self.prev = None
     
     def __str__(self):
         return str(self.object)
 
 
-class List():
+class Double_List():
     def __init__(self) -> None:
        self.first = None
+       self.tail = None
 
-    def addElement(self, value):
+    def append(self, value):
         element = ListElement(value)
         if(self.first == None):
             self.first = element
+            self.tail = element
         else:
-            iterator = self.getLastElement()
-            iterator.next = element
+            last = self.tail
+            last.next = element
+            element.prev = last
+            self.tail = element
     
     def getFirstElement(self):
         return self.first
@@ -27,54 +31,47 @@ class List():
     def getLength(self):
         counter = 0
         iterator = self.first
-        while(iterator.next != None):
+        while(iterator != self.tail):
             counter +=1
             iterator = iterator.next
         return counter + 1
 
     def extend(self, *args):
         for el in args:
-            self.addElement(el)
+            self.append(el)
     
     def pop(self):
-        iterator = self.first
-        while(iterator.next.next != None):
-            iterator = iterator.next
-        iterator.next = None
+        last = self.tail
+        prelast = last.prev
+        prelast.next = None
+        self.tail = prelast
         return True
 
     def clear(self):
         self.first.next = None
+        self.tail = None
         self.first = None
 
     def getSmallest(self):
         iterator = self.first
         smallest = self.first
-        while(iterator != None):
+        while(iterator != self.tail):
             if(iterator.object < smallest.object):
                 smallest = iterator
             iterator = iterator.next
         return smallest
 
     def sort(self):
-        sorted_list = List()
-        for i in range(self.getLength()):
-            ele = self.getSmallest()
-            sorted_list.addElement(ele)
-            self.deleteElement(ele.object)
-        return sorted_list
+        pass
             
     def deleteElement(self, element):
         if(element == self.first.object):
             self.first = self.first.next
             return
         iterator = self.first
-        prev = self.first
-        while(iterator.object != element):#
-            print(iterator)
-            prev = iterator
+        while(iterator.object != element):
             iterator = iterator.next
-        prev.next = iterator.next
+        iterator.prev.next = iterator.next
 
     def findObj(self, element):
         iterator = self.first
@@ -96,24 +93,18 @@ class List():
         return out
 
     def getLastElement(self):
-        iterator = self.first
-        if(self.first == None): return
-        while(iterator.next != None):
-            iterator = iterator.next
-        return iterator
+        return self.tail
     
     def reverseList(self):
         if(self.first == None): return
-        list1 = copy.deepcopy(self)
-        list2 = List()
-        while(list1.getLength() > 1):
-            lastE = list1.getLastElement()
-            list2.addElement(lastE)
-            list1.pop()
-        list2.addElement(list1.first)
+        list2 = Double_List()
+        iterator = self.tail
+        while(list2.getLength() < self.getLength()):
+            list2.append(iterator)
+            iterator = iterator.prev
         return list2
 
-    def getIndexFromElement(self, element):
+    def getIndex(self, element):
         iterator = self.first
         if(self.first == None): return
         counter = 0
@@ -125,7 +116,7 @@ class List():
                 return None
         return counter
     
-    def getElementFromIndex(self, index):
+    def getElement(self, index):
         iterator = self.first
         if(self.first == None): return
         if(index > self.getLength()):
@@ -138,34 +129,17 @@ class List():
 
 
 def main():
-    list = List()
-    list.addElement(2)
-    list.addElement(1)
-    list.addElement(4)
-    list.addElement(3)
+    list = Double_List()
+    list.append(2)
+    list.append(1)
+    list.append(4)
+    list.append(3)
 
     print("Ausgabe:", list.printList())
     print("Counter", list.getLength())
-    #print("Pop", list.pop())
+    print("Pop", list.pop())
     print("Ausgabe:", list.printList())
-    print("FindObj:", list.findObj(2))
-
-    print("IndexFromElement", list.getIndexFromElement(3))
-    print("LastElement:", list.getLastElement())
-
-    list2 = list.reverseList()
-    print("Ausgabe:", list2.printList())
-    #list.clear()
-
-    print("Ausgabe:", list.printList())
-    print("ElementFromIndex:", list.getElementFromIndex(0))
-
-    list.extend(5, 6, 7)
-    print("Ausgabe:", list.printList())
-    # print("DeleteElemntByIndex:", list.deleteElementByIndex(1))
-
-    list3 = list.sort()
-    print("Ausgabe: NEU", list3.printList())
+    print("FindObj:", list.findObj(3))
 
 
 if __name__ == "__main__":
