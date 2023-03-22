@@ -48,7 +48,9 @@ class Double_List():
         return True
 
     def clear(self):
+        #spart einen GarbageCollectorDurchgang
         self.first.next = None
+        self.tail.prev = None
         self.tail = None
         self.first = None
 
@@ -59,6 +61,7 @@ class Double_List():
             if(iterator.object < smallest.object):
                 smallest = iterator
             iterator = iterator.next
+        if(self.tail.object < smallest.object): smallest = self.tail
         return smallest
 
     def sort(self):
@@ -99,9 +102,10 @@ class Double_List():
         if(self.first == None): return
         list2 = Double_List()
         iterator = self.tail
-        while(list2.getLength() < self.getLength()):
+        while(iterator != self.first):
             list2.append(iterator)
             iterator = iterator.prev
+        list2.append(self.first)
         return list2
 
     def getIndex(self, element):
@@ -130,16 +134,19 @@ class Double_List():
 
 def main():
     list = Double_List()
-    list.append(2)
-    list.append(1)
-    list.append(4)
-    list.append(3)
+    for i in range(10):
+        list.append(10-i)
 
     print("Ausgabe:", list.printList())
     print("Counter", list.getLength())
     print("Pop", list.pop())
     print("Ausgabe:", list.printList())
-    print("FindObj:", list.findObj(3))
+    print("Delete the Element 5:")
+    list.deleteElement(5)
+    print("Ausgabe:", list.printList())
+    print("Smallest:", list.getSmallest())
+    list2 = list.reverseList()
+    print("Reverse:", list2.printList())
 
 
 if __name__ == "__main__":

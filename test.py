@@ -19,5 +19,6 @@ data = [ 7, 2,0, 1, 6, 1, 8 ]
 selectionSort(data)
 
 print(data)
+
         
   
