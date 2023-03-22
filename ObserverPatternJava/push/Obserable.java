@@ -1,4 +1,4 @@
-package ObserverPatternJava;
+package ObserverPatternJava.push;
 
 public interface Obserable{
     public void update(int temp, int humidity);

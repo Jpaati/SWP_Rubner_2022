@@ -1,4 +1,4 @@
-package ObserverPatternJava;
+package ObserverPatternJava.pull;
 
 import java.util.ArrayList;
 
@@ -27,8 +27,18 @@ public class WeatherStataion implements Obserable{
     @Override
     public void notifyObserver() {
         for (Observer observer : observers) {
-            observer.notifyObservers(temp, humidity);
+            observer.update(this);
         }
+    }
+
+    @Override
+    public int getTemp() {
+        return this.temp;
+    }
+
+    @Override
+    public int getHumidity() {
+        return this.humidity;
     }
     
 }
