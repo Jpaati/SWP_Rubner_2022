@@ -8,5 +8,6 @@ public class Main {
         Pizza p1 = pb.createPizza("Salami", 16);
         Pizza p2 = pv.createPizza("Diavola", 18);
         System.out.println(p2);
+        System.out.println(p1);
     }
 }

@@ -3,7 +3,7 @@ package ProxyPattern;
 public class Main {
     public static void main(String[] args) {
         Drucker sw = new DruckProxy("SW");
-        sw.scannen("test@test.at");
+        sw.scannen("meine@test.at");
         sw.print("Diplomarbeit");
 
         System.out.println("-------------------------------------");
