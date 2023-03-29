@@ -2,14 +2,14 @@ package ProxyPattern;
 
 public class Main {
     public static void main(String[] args) {
-        Drucker sw = new DruckProxy("SW");
-        sw.scannen("meine@test.at");
-        sw.print("Diplomarbeit");
+        Drucker SWDrucker = new DruckProxy("SW");
+        SWDrucker.scannen("meine@test.at");
+        SWDrucker.print("Diplomarbeit");
 
-        System.out.println("-------------------------------------");
+        System.out.println("-------------------------------------------------------");
 
-        Drucker color = new DruckProxy("CO");
-        color.scannen("test@test.at");
-        color.print("Diplomarbeit");
+        Drucker ColorDrucker = new DruckProxy("CO");
+        ColorDrucker.scannen("test@test.at");
+        ColorDrucker.print("Diplomarbeit");
     }
 }

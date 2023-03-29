@@ -1,5 +1,8 @@
 package ProxyPattern;
 
+//Proxy-Element ist Schnittstelle zwischen echter Drucker und Main
+// Dient als Türsteher, der etweilige kriterien übrprüft.
+
 public class DruckProxy implements Drucker{
 
     private Drucker drucker;
